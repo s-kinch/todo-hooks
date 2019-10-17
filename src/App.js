@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import './App.css';
 
-const Todo = ({ todo, completeTodo }) => {
+const Todo = ({ todo, completeTodo, deleteTodo }) => {
   return (
     <div 
       className="todo"
@@ -11,11 +11,14 @@ const Todo = ({ todo, completeTodo }) => {
       <div>
         <button onClick={completeTodo}>Complete</button>
       </div>
+      <div>
+        <button onClick={deleteTodo}>Delete</button>
+      </div>
     </div>
   )
 }
 
-const TodoForm = ({ addTodo, completeTodo }) => {
+const TodoForm = ({ addTodo }) => {
   const [value, setValue] = useState("");
 
   const handleSubmit = (e) => {
@@ -46,15 +49,17 @@ function App() {
 
   const addTodo = (text) => setTodos([...todos, { text, isCompleted: false }])
   const completeTodo = (index) => setTodos([...todos.slice(0, index), {...todos[index], isCompleted: true}, ...todos.slice(index + 1)])
+  const deleteTodo = (index) => setTodos([...todos.slice(0, index), ...todos.slice(index + 1)])
+  
   return (
     <div className="app">
       <div className="todo-list">
         {todos.map((todo, index) => (
           <Todo
-            key={index}
-            index={index}
+            key={index} // no
             todo={todo}
             completeTodo={() => completeTodo(index)}
+            deleteTodo={() => deleteTodo(index)}
           />
         ))}
         <TodoForm {...{addTodo}} />
